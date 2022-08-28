@@ -8,12 +8,7 @@ const {
 
 const { verifyToken, checkRole } = require("../middleware");
 
-router.post(
-  "/inventory/create",
-  verifyToken,
-  checkRole(["Admin"]),
-  createCrypto
-);
+router.post("/inventory/create",verifyToken,checkRole(["Admin"]),createCrypto);
 
 router.get("/inventory", verifyToken, checkRole(["Admin"]), checkInventory);
 
