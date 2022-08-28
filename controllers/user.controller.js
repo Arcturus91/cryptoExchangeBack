@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const TransactionBuy = require("../models/TransactionBuy.model");
 const TransactionSell = require("../models/TransactionSell.model");
 const CryptoInventory = require("../models/CryptoInventory.model");
+const Finances = require("../models/Finances.model");
 const { clearRes, createJWT } = require("../utils/utils");
 
 exports.getLoggedUser = (req, res, next) => {
@@ -36,8 +37,18 @@ exports.buyCripto = (req, res, next) => {
             { coinQuantity: newCryptoAmount },
             { new: true }
           ).then(() => {
-            const newUser = clearRes(user.toObject());
-            res.status(200).json({ user: newUser });
+            Finances.findOne().then((financeFound) => {
+              const newCash =
+                financeFound.cash + cryptoBuyAmount * cryptoBuyPrice;
+              const idLocator = financeFound._id;
+
+              Finances.findByIdAndUpdate(idLocator, { cash: newCash },{ new: true }).then(
+                () => {
+                  const newUser = clearRes(user.toObject());
+                  res.status(200).json({ user: newUser });
+                }
+              );
+            });
           });
         });
       });
@@ -67,7 +78,7 @@ exports.sellCripto = (req, res, next) => {
       }).then((user) => {
         CryptoInventory.findOne({ cryptoName }).then((cryptoFound) => {
           //cryptoName, coinQuantity, coinPrice
-          const newCryptoAmount = cryptoFound.coinQuantity + cryptoSellAmount
+          const newCryptoAmount = cryptoFound.coinQuantity + cryptoSellAmount;
           //DANGER: inventory price doesnt change because its calculated with average price.
           CryptoInventory.findOneAndUpdate(
             { cryptoName },

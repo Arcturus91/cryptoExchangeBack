@@ -5,6 +5,8 @@ const CryptoInventory = require("../models/CryptoInventory.model");
 exports.addCash = (req, res, next) => {
   const { cash } = req.body;
 
+  
+
   Finances.create({ cash })
     .then(() => {
       res.status(200).json({ successMessage: "Cash deposit was successful" });
