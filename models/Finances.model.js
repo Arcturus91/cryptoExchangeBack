@@ -2,7 +2,10 @@ const { Schema, model } = require("mongoose");
 
 const financesSchema = new Schema(
   {
-    cash:Number,
+    cash:{
+      type:Number,
+      min:[0,'not enough cash']
+    },
     typeBusiness: String,
   },
   {

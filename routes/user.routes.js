@@ -4,11 +4,9 @@ const {getLoggedUser,
    /*  editProfile,getUserById,deleteAccount,onlyAdminRead */
    buyCripto,
    sellCripto,
-   checkInventory,
-   buyInventory
 } = require ("../controllers/user.controller");
 
-const {verifyToken,checkRole} = require ("../middleware")
+const {verifyToken} = require ("../middleware")
 
 router.get("/my-profile", verifyToken, getLoggedUser)
 

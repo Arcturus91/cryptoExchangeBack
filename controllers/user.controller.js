@@ -41,19 +41,19 @@ exports.buyCripto = (req, res, next) => {
               const newCash =
                 financeFound.cash + cryptoBuyAmount * cryptoBuyPrice;
               const idLocator = financeFound._id;
-
-              Finances.findByIdAndUpdate(idLocator, { cash: newCash },{ new: true }).then(
-                () => {
-                  const newUser = clearRes(user.toObject());
-                  res.status(200).json({ user: newUser });
-                }
-              );
+              Finances.findByIdAndUpdate(
+                idLocator,
+                { cash: newCash },
+                { new: true }
+              ).then(() => {
+                const newUser = clearRes(user.toObject());
+                res.status(200).json({ user: newUser });
+              });
             });
           });
         });
       });
     })
-
     .catch((error) => {
       if (error instanceof mongoose.Error.ValidationError) {
         return res.status(400).json({ errorMessage: error.message });
@@ -62,10 +62,12 @@ exports.buyCripto = (req, res, next) => {
     });
 };
 
+//user sell crypto => company cash reduces.
 exports.sellCripto = (req, res, next) => {
   const { cryptoName, cryptoSellAmount, cryptoSellPrice } = req.body;
   const { _id } = req.user;
-
+//aqui podría ser el middleware check sobre enough cash.
+//runValidators: true,
   TransactionSell.create({
     _user: _id,
     cryptoName,
@@ -85,8 +87,19 @@ exports.sellCripto = (req, res, next) => {
             { coinQuantity: newCryptoAmount },
             { new: true }
           ).then(() => {
-            const newUser = clearRes(user.toObject());
-            res.status(200).json({ user: newUser });
+            Finances.findOne().then((financeFound) => {
+              const newCash =
+                financeFound.cash - cryptoSellAmount * cryptoSellPrice;
+              const idLocator = financeFound._id;
+              Finances.findByIdAndUpdate(
+                idLocator,
+                { cash: newCash },
+                { new: true }
+              ).then(() => {
+                const newUser = clearRes(user.toObject());
+                res.status(200).json({ user: newUser });
+              });
+            });
           });
         });
       });
@@ -99,4 +112,17 @@ exports.sellCripto = (req, res, next) => {
     });
 };
 
+exports.addBankAccount = (req, res, next) => {}
+
+exports.deleteBankAccount = (req, res, next) =>{}
+
+exports.editBankAccount = (req, res, next) =>{}
+
+exports.showBankAccounts = (req, res, next) => {};
+
+
+
+
+
 //cuando te estés quedando sin inventario, retira la cripto de la posibildiad de comprarse
+//esto se puede hacer con validaciones del Schema
