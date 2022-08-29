@@ -7,6 +7,7 @@ const cryptoInventorySchema = new Schema(
       minLength: 1,
       trim: true,
       required: true,
+      uppercase:true
     },
     coinQuantity: {
       type: Number,

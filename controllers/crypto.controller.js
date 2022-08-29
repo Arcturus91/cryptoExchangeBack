@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const TransactionBuy = require("../models/TransactionBuy.model");
 const CryptoInventory = require("../models/CryptoInventory.model");
 const { clearCryptoRes } = require("../utils/utils");
+const binance = require("../config/binance.config");
 
 //will only execute this when creating a new crypto
 exports.createCrypto = (req, res, next) => {

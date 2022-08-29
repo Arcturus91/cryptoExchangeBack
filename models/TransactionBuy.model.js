@@ -9,6 +9,7 @@ const transactionBuySchema = new Schema(
       minLength: 1,
       trim: true,
       required: true,
+      uppercase:true
     },
     cryptoBuyAmount: {
       type: Number,

@@ -6,7 +6,10 @@ const financesSchema = new Schema(
       type:Number,
       min:[0,'not enough cash']
     },
-    typeBusiness: String,
+    profits:{
+      type:Number,
+      default: 0
+    }
   },
   {
     timestamps: true,

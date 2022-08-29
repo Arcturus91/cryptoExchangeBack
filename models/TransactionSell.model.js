@@ -9,6 +9,7 @@ const transactionSellSchema = new Schema(
       minLength: 1,
       trim: true,
       required: true,
+      uppercase:true
     },
     cryptoSellAmount: {
       type: Number,
