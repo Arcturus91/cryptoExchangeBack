@@ -4,6 +4,9 @@ const {getLoggedUser,
    /*  editProfile,getUserById,deleteAccount,onlyAdminRead */
    buyCripto,
    sellCripto,
+   createBankAccount,
+   editBankAccount,
+   deleteBankAccount
 } = require ("../controllers/user.controller");
 
 const {verifyToken} = require ("../middleware")
@@ -13,6 +16,12 @@ router.get("/my-profile", verifyToken, getLoggedUser)
 router.post("/my-profile/buy", verifyToken,buyCripto )
 
 router.post("/my-profile/sell", verifyToken,sellCripto )
+
+router.post("/my-profile/create-bank-account", verifyToken,createBankAccount)
+
+router.patch("/my-profile/edit-bank-account", verifyToken,editBankAccount)
+
+router.patch("/my-profile/delete-bank-account", verifyToken,deleteBankAccount)
 
 
 

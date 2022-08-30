@@ -38,10 +38,16 @@ const userSchema = new Schema(
       default: "https://res.cloudinary.com/dhgfid3ej/image/upload/v1558806705/asdsadsa_iysw1l.jpg"
     },
     bankAccount:{
-      type:Number
+      type:Number,
+      match: [/^(\d{14,14})$/g, "Please use only numbers."]
+      //este no funciona: match: [/^-?\d*\.?\d*$/, "Please use only numbers."],
+
+      //maybe walletAddress should be a model because you need at least 1 different for BTC and another one for ETH.
     },
     walletAddress:{
-      type:String
+      type:String,
+      
+     
     },
   _userBuys: [{type:Schema.Types.ObjectId, ref:'TransactionBuy'}],
   _userSells: [{type:Schema.Types.ObjectId, ref:'TransactionSell'}],

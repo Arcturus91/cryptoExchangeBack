@@ -7,8 +7,21 @@ const { clearRes, createJWT } = require("../utils/utils");
 
 exports.signupProcess = (req, res, next) => {
 
-    const { role, email, password, confirmPassword, ...restUser } = req.body;
-  
+    const { role, email, password, confirmPassword, bankAccount, ...restUser } = req.body;
+
+
+/*     const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
+    if(!regex.test(password)){
+        res.render('auth/userSignup',{errorMessage:' Password needs at leas:t 8 characters, 1 uppercase, 1 lowercase letter and a number. No special characters @,#, etc, allowed.'})
+        return;
+    } */
+
+const regex1 = /^(\d{14,14})$/g;
+    if(!regex1.test(bankAccount)){
+      return res.status(400).json({error:"Tu cuenta bancaria debe tener 14 números."})
+    }
+
+
     if (!email.length || !password.length || !confirmPassword.length)
       return res
         .status(400)
@@ -32,7 +45,7 @@ exports.signupProcess = (req, res, next) => {
           .genSalt(10)
           .then((salt) => bcryptjs.hash(password, salt))
           .then((hashedPassword) => {
-            return User.create({ email, password: hashedPassword, ...restUser });
+            return User.create({ email, password: hashedPassword, bankAccount, ...restUser });
           })
   
           .then((user) => {

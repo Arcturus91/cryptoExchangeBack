@@ -6,7 +6,7 @@ const CryptoInventory = require("../models/CryptoInventory.model");
 const Finances = require("../models/Finances.model");
 const binance = require("../config/binance.config");
 const { clearRes, createJWT } = require("../utils/utils");
- const profitMargin =0.01
+const profitMargin = 0.01;
 
 exports.getLoggedUser = (req, res, next) => {
   res.status(200).json({ user: req.user });
@@ -21,11 +21,12 @@ exports.buyCripto = (req, res, next) => {
     .prices()
     .then((ticker) => {
       const cryptoPair = cryptoName + "USDT";
-      const cryptoCompanyCost = ticker[cryptoPair]
-      const cryptoBuyPrice = cryptoCompanyCost*(1+profitMargin)
-      const operationProfit = cryptoBuyAmount * cryptoCompanyCost * profitMargin
-      console.log(operationProfit)
-//cryptoBuyPrice * CyrptoBuyAmount is what user pays.
+      const cryptoCompanyCost = ticker[cryptoPair];
+      const cryptoBuyPrice = cryptoCompanyCost * (1 + profitMargin);
+      const operationProfit =
+        cryptoBuyAmount * cryptoCompanyCost * profitMargin;
+      console.log(operationProfit);
+      //cryptoBuyPrice * CyrptoBuyAmount is what user pays.
       TransactionBuy.create({
         _user: _id,
         cryptoName,
@@ -51,12 +52,11 @@ exports.buyCripto = (req, res, next) => {
               Finances.findOne().then((financeFound) => {
                 const newCash =
                   financeFound.cash + cryptoBuyAmount * cryptoBuyPrice;
-                  const newProfits
-                   = financeFound.profits + operationProfit ;
+                const newProfits = financeFound.profits + operationProfit;
                 const idLocator = financeFound._id;
                 Finances.findByIdAndUpdate(
                   idLocator,
-                  { cash: newCash,profits:newProfits},
+                  { cash: newCash, profits: newProfits },
                   { new: true }
                 ).then(() => {
                   const newUser = clearRes(user.toObject());
@@ -126,13 +126,62 @@ exports.sellCripto = (req, res, next) => {
     });
 };
 
-exports.addBankAccount = (req, res, next) => {};
+//BANK ROUTES: i know i should create a separte model for them but lack of time.
 
-exports.deleteBankAccount = (req, res, next) => {};
+exports.createBankAccount = (req, res, next) => {
+  const { bankAccount } = req.body;
+  const { _id } = req.user;
 
-exports.editBankAccount = (req, res, next) => {};
+  User.findByIdAndUpdate(_id, { bankAccount }, { new: true })
+    .then((user) => {
+      const newUser = clearRes(user.toObject());
+      res.status(200).json({ user: newUser });
+    })
+    .catch((error) => {
+      if (error instanceof mongoose.Error.ValidationError) {
+        return res.status(400).json({ errorMessage: error.message });
+      }
+      return res.status(500).json({ errorMessage: error.message });
+    });
+};
 
-exports.showBankAccounts = (req, res, next) => {};
+exports.deleteBankAccount = (req, res, next) => {
+  const { _id } = req.user;
+  User.findByIdAndUpdate(_id, { bankAccount: null }, { new: true })
+    .then((user) => {
+      const newUser = clearRes(user.toObject());
+      res.status(200).json({ user: newUser });
+    })
+    .catch((error) => {
+      if (error instanceof mongoose.Error.ValidationError) {
+        return res.status(400).json({ errorMessage: error.message });
+      }
+      return res.status(500).json({ errorMessage: error.message });
+    });
+};
+
+exports.editBankAccount = (req, res, next) => {
+  const { bankAccount } = req.body;
+  const { _id } = req.user;
+
+  User.findByIdAndUpdate(_id, { bankAccount }, { new: true })
+    .then((user) => {
+      const newUser = clearRes(user.toObject());
+      res.status(200).json({ user: newUser });
+    })
+    .catch((error) => {
+      if (error instanceof mongoose.Error.ValidationError) {
+        return res.status(400).json({ errorMessage: error.message });
+      }
+      return res.status(500).json({ errorMessage: error.message });
+    });
+};
+
+//WalletAddress routes:
+
+
+
+
 
 //cuando te estés quedando sin inventario, retira la cripto de la posibildiad de comprarse
 //esto se puede hacer con validaciones del Schema
