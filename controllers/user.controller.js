@@ -15,7 +15,39 @@ exports.getLoggedUser = (req, res, next) => {
 exports.buyCripto = (req, res, next) => {
   const { cryptoName, cryptoBuyAmount } = req.body;
   //removing cryptoBuyPrice for making it come from binance API
-  const { _id } = req.user;
+  const { _id, walletETHAddress, walletBTCAddress } = req.user;
+
+  if (!walletBTCAddress && !walletETHAddress) {
+    return res
+      .status(400)
+      .json({ errorMessage: "Porfavor agrega una dirección cripto." });
+  }
+
+  switch (cryptoName) {
+    case "BTC":
+      if (!walletBTCAddress) {
+        return res
+          .status(400)
+          .json({
+            errorMessage:
+              "Porfavor agrega una dirección cripto que admita BTC.",
+          });
+      }
+      break;
+
+    case "ETH":
+      if (!walletETHAddress) {
+        return res
+          .status(400)
+          .json({
+            errorMessage:
+              "Porfavor agrega una dirección cripto que admita ETH.",
+          });
+      }
+      break;
+      
+
+  }
 
   binance
     .prices()
@@ -25,8 +57,7 @@ exports.buyCripto = (req, res, next) => {
       const cryptoBuyPrice = cryptoCompanyCost * (1 + profitMargin);
       const operationProfit =
         cryptoBuyAmount * cryptoCompanyCost * profitMargin;
-      console.log(operationProfit);
-      //cryptoBuyPrice * CyrptoBuyAmount is what user pays.
+
       TransactionBuy.create({
         _user: _id,
         cryptoName,
@@ -43,7 +74,13 @@ exports.buyCripto = (req, res, next) => {
           CryptoInventory.findOne({ cryptoName }).then((cryptoFound) => {
             //cryptoName, coinQuantity, coinPrice
             const newCryptoAmount = cryptoFound.coinQuantity - cryptoBuyAmount;
-            // DANGER: inventory price doesnt change because its calculated with average price.
+
+            if (newCryptoAmount<0) {
+              return res
+                .status(400)
+                .json({ errorMessage: "No hay sufiente de esta crypto moneda. Porfavor reduce el tamaño de tu orden." });
+            }
+
             CryptoInventory.findOneAndUpdate(
               { cryptoName },
               { coinQuantity: newCryptoAmount },
@@ -132,6 +169,13 @@ exports.createBankAccount = (req, res, next) => {
   const { bankAccount } = req.body;
   const { _id } = req.user;
 
+  const regexBank = /^(\d{14,14})$/g;
+  if (!regexBank.test(bankAccount)) {
+    return res
+      .status(400)
+      .json({ error: "Tu cuenta bancaria debe tener 14 números." });
+  }
+
   User.findByIdAndUpdate(_id, { bankAccount }, { new: true })
     .then((user) => {
       const newUser = clearRes(user.toObject());
@@ -179,9 +223,53 @@ exports.editBankAccount = (req, res, next) => {
 
 //WalletAddress routes:
 
+exports.addBTCwallet = (req, res, next) => {
+  const { walletBTCAddress } = req.body;
+  const { _id } = req.user;
 
+  const regexBTCwallet = /^[13][a-km-zA-HJ-NP-Z1-9]{25,34}/;
+  if (!regexBTCwallet.test(walletBTCAddress)) {
+    return res
+      .status(400)
+      .json({ error: "Dirección de billetera de BTC incorrecta." });
+  }
 
+  User.findByIdAndUpdate(_id, { walletBTCAddress }, { new: true })
+    .then((user) => {
+      const newUser = clearRes(user.toObject());
+      res.status(200).json({ user: newUser });
+    })
+    .catch((error) => {
+      if (error instanceof mongoose.Error.ValidationError) {
+        return res.status(400).json({ errorMessage: error.message });
+      }
+      return res.status(500).json({ errorMessage: error.message });
+    });
+};
 
+exports.addETHwallet = (req, res, next) => {
+  const { walletETHAddress } = req.body;
+  const { _id } = req.user;
+
+  const regexETHwallet = /^0x[a-fA-F0-9]{40}$/;
+  if (!regexETHwallet.test(walletETHAddress)) {
+    return res
+      .status(400)
+      .json({ error: "Dirección de billetera de ETH incorrecta." });
+  }
+
+  User.findByIdAndUpdate(_id, { walletETHAddress }, { new: true })
+    .then((user) => {
+      const newUser = clearRes(user.toObject());
+      res.status(200).json({ user: newUser });
+    })
+    .catch((error) => {
+      if (error instanceof mongoose.Error.ValidationError) {
+        return res.status(400).json({ errorMessage: error.message });
+      }
+      return res.status(500).json({ errorMessage: error.message });
+    });
+};
 
 //cuando te estés quedando sin inventario, retira la cripto de la posibildiad de comprarse
 //esto se puede hacer con validaciones del Schema

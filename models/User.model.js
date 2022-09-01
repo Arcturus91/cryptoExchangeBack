@@ -44,10 +44,11 @@ const userSchema = new Schema(
 
       //maybe walletAddress should be a model because you need at least 1 different for BTC and another one for ETH.
     },
-    walletAddress:{
+    walletBTCAddress:{
       type:String,
-      
-     
+    },
+    walletETHAddress:{
+      type:String,
     },
   _userBuys: [{type:Schema.Types.ObjectId, ref:'TransactionBuy'}],
   _userSells: [{type:Schema.Types.ObjectId, ref:'TransactionSell'}],

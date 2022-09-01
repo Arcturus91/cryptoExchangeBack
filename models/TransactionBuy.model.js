@@ -16,9 +16,8 @@ const transactionBuySchema = new Schema(
       required: true,
     },
     cryptoBuyPrice: {
-      type: Number,
-      required: true,
-    },
+      type: Number
+    }, 
     _user: { type: Schema.Types.ObjectId, ref: "User" },
   },
   {

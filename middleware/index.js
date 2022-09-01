@@ -41,3 +41,42 @@ exports.checkRole = (arrayRoles) => {
     }
   };
 };
+
+exports.checkWallet = ()=>{
+  return (req,res,next)=>{
+    
+    const { _id, walletETHAddress, walletBTCAddress } = req.user;
+
+    if (!walletBTCAddress && !walletETHAddress) {
+      return res
+        .status(400)
+        .json({ errorMessage: "Porfavor agrega una dirección cripto." });
+    }
+  
+    switch (cryptoName) {
+      case "BTC":
+        if (!walletBTCAddress) {
+          return res
+            .status(400)
+            .json({
+              errorMessage:
+                "Porfavor agrega una dirección cripto que admita BTC.",
+            });
+        }
+        break;
+  
+      case "ETH":
+        if (!walletETHAddress) {
+          return res
+            .status(400)
+            .json({
+              errorMessage:
+                "Porfavor agrega una dirección cripto que admita ETH.",
+            });
+        }
+        break;
+        
+  
+    }
+  }
+}

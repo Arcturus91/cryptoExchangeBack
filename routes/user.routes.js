@@ -6,7 +6,9 @@ const {getLoggedUser,
    sellCripto,
    createBankAccount,
    editBankAccount,
-   deleteBankAccount
+   deleteBankAccount,
+   addBTCwallet,
+   addETHwallet
 } = require ("../controllers/user.controller");
 
 const {verifyToken} = require ("../middleware")
@@ -23,7 +25,9 @@ router.patch("/my-profile/edit-bank-account", verifyToken,editBankAccount)
 
 router.patch("/my-profile/delete-bank-account", verifyToken,deleteBankAccount)
 
+router.post("/my-profile/add-btc-wallet", verifyToken,addBTCwallet)
 
+router.post("/my-profile/add-eth-wallet", verifyToken,addETHwallet)
 
 
 //router.patch("/edit-profile", verifyToken, editProfile)
