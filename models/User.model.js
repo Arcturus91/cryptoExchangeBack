@@ -40,9 +40,6 @@ const userSchema = new Schema(
     bankAccount:{
       type:Number,
       match: [/^(\d{14,14})$/g, "Please use only numbers."]
-      //este no funciona: match: [/^-?\d*\.?\d*$/, "Please use only numbers."],
-
-      //maybe walletAddress should be a model because you need at least 1 different for BTC and another one for ETH.
     },
     walletBTCAddress:{
       type:String,
