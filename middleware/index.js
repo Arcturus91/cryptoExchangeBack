@@ -42,10 +42,13 @@ exports.checkRole = (arrayRoles) => {
   };
 };
 
-exports.checkWallet = ()=>{
-  return (req,res,next)=>{
-    
-    const { _id, walletETHAddress, walletBTCAddress } = req.user;
+exports.checkWallet = (req, res, next)=>{
+
+
+    const {walletETHAddress, walletBTCAddress } = req.user;
+
+    const { cryptoName} = req.body;
+    console.log(cryptoName, walletETHAddress, walletBTCAddress)
 
     if (!walletBTCAddress && !walletETHAddress) {
       return res
@@ -78,5 +81,7 @@ exports.checkWallet = ()=>{
         
   
     }
-  }
+    
+    next();
+  
 }
