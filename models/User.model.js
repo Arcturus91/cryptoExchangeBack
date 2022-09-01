@@ -52,6 +52,7 @@ const userSchema = new Schema(
     },
   _userBuys: [{type:Schema.Types.ObjectId, ref:'TransactionBuy'}],
   _userSells: [{type:Schema.Types.ObjectId, ref:'TransactionSell'}],
+  receipts:[{type:Object}],
   _comments: [{type:Schema.Types.ObjectId, ref:'Comment'}],
   _posts: [{type:Schema.Types.ObjectId, ref:'Post'}],
   },
