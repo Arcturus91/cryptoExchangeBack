@@ -102,6 +102,7 @@ exports.sellCripto = (req, res, next) => {
             errorMessage: "Aún no negociamos con esta cripto.",
           });
         }
+        
         Finances.findOne().then((financeFound) => {
         if (financeFound.cash < cryptoSellAmount * cryptoSellPrice) {
           return res
@@ -120,7 +121,7 @@ exports.sellCripto = (req, res, next) => {
         }).then((newTransaction) => {
           User.findByIdAndUpdate(_id, {
             $push: { _userSells: newTransaction._id },
-          }).then((user) => {
+          },{ new: true }).then((user) => {
               //cryptoName, coinQuantity, coinPrice
               const newCryptoAmount =
                 cryptoFound.coinQuantity + cryptoSellAmount;

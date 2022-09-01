@@ -11,13 +11,13 @@ const {getLoggedUser,
    addETHwallet
 } = require ("../controllers/user.controller");
 
-const {verifyToken,checkWallet,checkRole} = require ("../middleware")
+const {verifyToken,checkWallet,checkRole,checkBankAccount} = require ("../middleware")
 
 router.get("/my-profile", verifyToken, getLoggedUser)
 
 router.post("/my-profile/buy", verifyToken,checkRole(["User"]),checkWallet,buyCripto ) //user needs to have a proper crypto wallet to buy the crypto.
 
-router.post("/my-profile/sell", verifyToken,checkRole(["User"]),sellCripto ) //user needs to have registered bank account for selling crypto.
+router.post("/my-profile/sell", verifyToken,checkRole(["User"]),checkBankAccount,sellCripto ) //user needs to have registered bank account for selling crypto.
 
 router.post("/my-profile/create-bank-account", verifyToken,createBankAccount)
 
