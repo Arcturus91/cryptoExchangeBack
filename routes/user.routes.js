@@ -19,7 +19,7 @@ const {verifyToken,checkWallet,checkRole,checkBankAccount} = require ("../middle
 router.get("/my-profile", verifyToken, getLoggedUser)
 
 
-router.post("/my-profile/singleUpload",uploadCloud.single("image"),verifyToken,uploadProcess)
+router.post("/my-profile/singleUpload",uploadCloud.single("image"),uploadProcess)
 
 router.post("/my-profile/buy", verifyToken,checkRole(["User"]),checkWallet,buyCripto ) //user needs to have a proper crypto wallet to buy the crypto.
 

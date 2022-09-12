@@ -22,6 +22,24 @@ exports.uploadProcess = async (req, res, next) => {
   const uploader = async (path) => uploads(path, "images");
 
   if (req.method === "POST") {
+    const { path } = req.file;
+    const newPath = await uploader(path);
+    const url = {
+      uri: newPath.url,
+      id: newPath.id,
+      name: req.file.originalname,
+    }
+      res.status(200).json({ url, successMessage: "Recibo subido" });
+  } else {
+    res.status(400).json({ errorMessage: `${req.method} no permitido!` }); //req.method indica el metodo html.
+  }
+};
+
+
+/* 
+
+lo que voy a cambiar:
+if (req.method === "POST") {
       const { path } = req.file;
       const newPath = await uploader(path);
       const url = {
@@ -44,3 +62,4 @@ exports.uploadProcess = async (req, res, next) => {
     res.status(400).json({ errorMessage: `${req.method} no permitido!` }); //req.method indica el metodo html.
   }
 };
+*/
