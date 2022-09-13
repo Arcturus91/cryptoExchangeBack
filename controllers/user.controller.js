@@ -167,7 +167,7 @@ exports.createBankAccount = (req, res, next) => {
   if (!regexBank.test(bankAccount)) {
     return res
       .status(400)
-      .json({ error: "Tu cuenta bancaria debe tener 14 números." });
+      .json({ errorMessage: "Tu cuenta bancaria debe tener 14 números." });
   }
 
   User.findByIdAndUpdate(_id, { bankAccount }, { new: true })
@@ -225,7 +225,7 @@ exports.addBTCwallet = (req, res, next) => {
   if (!regexBTCwallet.test(walletBTCAddress)) {
     return res
       .status(400)
-      .json({ error: "Dirección de billetera de BTC incorrecta." });
+      .json({ errorMessage: "Dirección de billetera de BTC incorrecta." });
   }
 
   User.findByIdAndUpdate(_id, { walletBTCAddress }, { new: true })
@@ -249,7 +249,7 @@ exports.addETHwallet = (req, res, next) => {
   if (!regexETHwallet.test(walletETHAddress)) {
     return res
       .status(400)
-      .json({ error: "Dirección de billetera de ETH incorrecta." });
+      .json({ errorMessage: "Dirección de billetera de ETH incorrecta." });
   }
 
   User.findByIdAndUpdate(_id, { walletETHAddress }, { new: true })
@@ -264,3 +264,21 @@ exports.addETHwallet = (req, res, next) => {
       return res.status(500).json({ errorMessage: error.message });
     });
 };
+
+//See user history of operations
+
+exports.userOperations = (req, res, next) => {
+  const {  _id} = req.user
+  console.log( _id)
+
+  User.findById
+  (_id)
+  .populate("_userBuys")
+  .populate("_userSells")
+  .then((user)=>{
+    const newUser = clearRes(user.toObject());
+      res.status(200).json({ user: newUser });
+  })
+
+
+}

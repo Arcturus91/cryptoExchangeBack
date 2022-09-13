@@ -11,7 +11,8 @@ const {getLoggedUser,
    editBankAccount,
    deleteBankAccount,
    addBTCwallet,
-   addETHwallet
+   addETHwallet,
+   userOperations
 } = require ("../controllers/user.controller");
 
 const {verifyToken,checkWallet,checkRole,checkBankAccount} = require ("../middleware")
@@ -36,6 +37,8 @@ router.patch("/my-profile/delete-bank-account", verifyToken,deleteBankAccount)
 router.post("/my-profile/add-btc-wallet", verifyToken,addBTCwallet)
 
 router.post("/my-profile/add-eth-wallet", verifyToken,addETHwallet)
+
+router.get("/my-profile/getOperations", verifyToken,userOperations)
 
 
 //router.patch("/edit-profile", verifyToken, editProfile)
