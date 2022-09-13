@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const {uploadProcess} = require ("../controllers/upload.controller");
+const {uploadProcess,addReceipt} = require ("../controllers/upload.controller");
 const uploadCloud = require ("../helpers/cloudinary")
 
 const {getLoggedUser,
@@ -20,6 +20,8 @@ router.get("/my-profile", verifyToken, getLoggedUser)
 
 
 router.post("/my-profile/singleUpload",uploadCloud.single("image"),uploadProcess)
+
+router.post("/my-profile/uploadReceipt", verifyToken,addReceipt)
 
 router.post("/my-profile/buy", verifyToken,checkRole(["User"]),checkWallet,buyCripto ) //user needs to have a proper crypto wallet to buy the crypto.
 

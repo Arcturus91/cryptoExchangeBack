@@ -35,7 +35,7 @@ const userSchema = new Schema(
     },
     imageUrl:  {
       type: String,
-      default: "https://res.cloudinary.com/dhgfid3ej/image/upload/v1558806705/asdsadsa_iysw1l.jpg"
+      default: "https://res.cloudinary.com/dad5dandd/image/upload/v1662986729/wfsac5qqruordebqtzhk.jpg"
     },
     bankAccount:{
       type:Number,

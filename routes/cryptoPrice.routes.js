@@ -1,5 +1,5 @@
 const router = require("express").Router();
-
+const mongoose = require("mongoose");
 const binance = require("../config/binance.config");
 
 

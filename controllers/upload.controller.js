@@ -36,30 +36,16 @@ exports.uploadProcess = async (req, res, next) => {
 };
 
 
-/* 
-
-lo que voy a cambiar:
-if (req.method === "POST") {
-      const { path } = req.file;
-      const newPath = await uploader(path);
-      const url = {
-        uri: newPath.url,
-        id: newPath.id,
-        name: req.file.originalname,
-      };
-      
-      const { _id } = req.user;
-
+exports.addReceipt = (req, res, next) => {
+  const { receiptUrl } = req.body;
+  const { _id } = req.user;
   User.findByIdAndUpdate(_id,{
-        $push: { receipts: url},
-      },
-      { new: true })
-      .then(()=>{ 
-      res.status(200).json({ url, successMessage: "Recibo subido" })
-    })
-    
-  } else {
-    res.status(400).json({ errorMessage: `${req.method} no permitido!` }); //req.method indica el metodo html.
-  }
-};
-*/
+    $push: { receipts: receiptUrl},
+  },
+  { new: true })
+  .then((user)=>{ 
+  res.status(200).json({ user, successMessage: "Recibo subido" })
+})
+
+}
+
