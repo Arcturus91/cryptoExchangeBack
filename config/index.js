@@ -27,9 +27,7 @@ module.exports = (app) => {
     favicon(path.join(__dirname, "..", "public", "images", "favicon.ico"))
   );
 
-  app.use("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "index.html"));
-  });
+ 
 
   // controls a very specific header to pass headers from the frontend
   app.use(
