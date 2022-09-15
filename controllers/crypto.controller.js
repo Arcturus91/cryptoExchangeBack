@@ -82,7 +82,7 @@ exports.checkInventory = (req, res, next) => {
 exports.buyInventory = (req, res, next) => {
   const { cryptoName, cryptoBuyAmount } = req.body;
   const { _id } = req.user;
-
+const cryptoBuyAmountNumber = Number(cryptoBuyAmount)
   binance
     .prices()
     .then((ticker) => {
@@ -97,13 +97,13 @@ exports.buyInventory = (req, res, next) => {
         }
 
         Finances.findOne().then((financeModel) => {
-          if (financeModel.cash < cryptoBuyAmount * cryptoBuyPrice) {
+          if (financeModel.cash < cryptoBuyAmountNumber * cryptoBuyPrice) {
             return res.status(400).json({
               errorMessage:
                 "No hay suficiente cash en las cuentas para esta compra.",
             });
           }
-          const newCash = financeModel.cash - cryptoBuyAmount * cryptoBuyPrice;
+          const newCash = financeModel.cash - cryptoBuyAmountNumber * cryptoBuyPrice;
           const idLocator = financeModel._id;
           Finances.findByIdAndUpdate(
             idLocator,
@@ -124,11 +124,11 @@ exports.buyInventory = (req, res, next) => {
                 { new: true }
               ).then(() => {
                 const newCryptoAmount =
-                  cryptoFound.coinQuantity + cryptoBuyAmount;
+                  cryptoFound.coinQuantity + cryptoBuyAmountNumber;
 
                 const newCryptoInvPrice =
                   (cryptoFound.coinPrice * cryptoFound.coinQuantity +
-                    cryptoBuyPrice * cryptoBuyAmount) /
+                    cryptoBuyPrice * cryptoBuyAmountNumber) /
                   newCryptoAmount;
                 CryptoInventory.findOneAndUpdate(
                   { cryptoName },
