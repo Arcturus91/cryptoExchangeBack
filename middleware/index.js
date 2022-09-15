@@ -41,3 +41,61 @@ exports.checkRole = (arrayRoles) => {
     }
   };
 };
+
+exports.checkWallet = (req, res, next)=>{
+
+
+    const {walletETHAddress, walletBTCAddress } = req.user;
+
+    const { cryptoName} = req.body;
+
+    if (!walletBTCAddress && !walletETHAddress) {
+      return res
+        .status(400)
+        .json({ errorMessage: "Porfavor agrega una dirección cripto." });
+    }
+  
+    switch (cryptoName) {
+      case "BTC":
+        if (!walletBTCAddress) {
+          return res
+            .status(400)
+            .json({
+              errorMessage:
+                "Porfavor agrega una dirección cripto que admita BTC.",
+            });
+        }
+        break;
+  
+      case "ETH":
+        if (!walletETHAddress) {
+          return res
+            .status(400)
+            .json({
+              errorMessage:
+                "Porfavor agrega una dirección cripto que admita ETH.",
+            });
+        }
+        break;
+        
+  
+    }
+    
+    next();
+  
+}
+
+exports.checkBankAccount = (req, res, next)=>{
+
+
+  const { bankAccount} = req.user;
+
+  if (!bankAccount) {
+    return res
+      .status(400)
+      .json({ errorMessage: "Porfavor registra una cuenta bancaria para poder vender una cripto." });
+  }
+
+  next();
+
+}

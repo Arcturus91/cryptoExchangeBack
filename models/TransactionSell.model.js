@@ -13,12 +13,15 @@ const transactionSellSchema = new Schema(
     },
     cryptoSellAmount: {
       type: Number,
+      required: true,
     },
 
     cryptoSellPrice: {
       type: Number,
-      required: true,
+      
     },
+    _user: { type: Schema.Types.ObjectId, ref: "User" },
+
 },
 {
   // this second object adds extra properties: `createdAt` and `updatedAt`

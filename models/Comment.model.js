@@ -11,7 +11,6 @@ const commentSchema = new Schema(
   }
 );
 
-//nota como commen requiere el id del user, entonces jalas con ref el user.
 
 const Comment = model("Comment", commentSchema);
 

@@ -4,12 +4,13 @@ const CryptoInventory = require("../models/CryptoInventory.model");
 
 exports.addCash = (req, res, next) => {
   const { cash } = req.body;
-
+console.log("yo soy cash server", )
+const cashToAdd = Number(cash)
   Finances.findOne()
     .then((found) => {
       if (found) {
         const idLocator = found._id;
-        const newCash = found.cash + cash;
+        const newCash = found.cash + cashToAdd;
         Finances.findByIdAndUpdate(
           idLocator,
           { cash: newCash },
@@ -18,7 +19,7 @@ exports.addCash = (req, res, next) => {
           res.status(200).json({ successMessage: "Cash was added." });
         });
       } else {
-        Finances.create({ cash }).then(() => {
+        Finances.create({ cash:cashToAdd }).then(() => {
           res
             .status(200)
             .json({ successMessage: "Cash initial deposit was successful" });

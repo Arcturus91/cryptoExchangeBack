@@ -12,7 +12,6 @@ const postSchema = new Schema(
   }
 );
 
-//nota como commen requiere el id del user, entonces jalas con ref el user.
 
 const Post = model("Post", postSchema);
 

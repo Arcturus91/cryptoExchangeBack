@@ -35,16 +35,21 @@ const userSchema = new Schema(
     },
     imageUrl:  {
       type: String,
-      default: "https://res.cloudinary.com/dhgfid3ej/image/upload/v1558806705/asdsadsa_iysw1l.jpg"
+      default: "https://res.cloudinary.com/dad5dandd/image/upload/v1662986729/wfsac5qqruordebqtzhk.jpg"
     },
     bankAccount:{
-      type:Number
+      type:Number,
+      match: [/^(\d{14,14})$/g, "Please use only numbers."]
     },
-    walletAddress:{
-      type:String
+    walletBTCAddress:{
+      type:String,
+    },
+    walletETHAddress:{
+      type:String,
     },
   _userBuys: [{type:Schema.Types.ObjectId, ref:'TransactionBuy'}],
   _userSells: [{type:Schema.Types.ObjectId, ref:'TransactionSell'}],
+  receipts:[{type:Object}],
   _comments: [{type:Schema.Types.ObjectId, ref:'Comment'}],
   _posts: [{type:Schema.Types.ObjectId, ref:'Post'}],
   },

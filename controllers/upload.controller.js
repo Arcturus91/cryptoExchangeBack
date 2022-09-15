@@ -1,4 +1,5 @@
 const cloudinary = require("cloudinary");
+const User = require("../models/User.model");
 
 exports.uploadProcess = async (req, res, next) => {
   const uploads = (file, folder) => {
@@ -21,33 +22,30 @@ exports.uploadProcess = async (req, res, next) => {
   const uploader = async (path) => uploads(path, "images");
 
   if (req.method === "POST") {
-    const urls = [];
-    const files = req.files;
-    //req.files con el s al final te bota un array
-    //req.file sin la s al final te bota u solo archivo
-
-    if (!req.file) {
-      for (const file of files) {
-        const { path } = file;
-        const newPath = await uploader(path);
-        urls.push({
-          uri: newPath.url,
-          id: newPath.id,
-          name: file.originalname,
-        });
-      }
-      res.status(200).json({ urls, successMessage: "Imagenes guardadas" });
-    } else {
-      const { path } = req.file;
-      const newPath = await uploader(path);
-      const url = {
-        uri: newPath.url,
-        id: newPath.id,
-        name: req.file.originalname,
-      };
-      res.status(200).json({ url, successMessage: "Imagen guardada" });
+    const { path } = req.file;
+    const newPath = await uploader(path);
+    const url = {
+      uri: newPath.url,
+      id: newPath.id,
+      name: req.file.originalname,
     }
+      res.status(200).json({ url, successMessage: "Recibo subido" });
   } else {
     res.status(400).json({ errorMessage: `${req.method} no permitido!` }); //req.method indica el metodo html.
   }
 };
+
+
+exports.addReceipt = (req, res, next) => {
+  const { receiptUrl } = req.body;
+  const { _id } = req.user;
+  User.findByIdAndUpdate(_id,{
+    $push: { receipts: receiptUrl},
+  },
+  { new: true })
+  .then((user)=>{ 
+  res.status(200).json({ user, successMessage: "Recibo subido" })
+})
+
+}
+
