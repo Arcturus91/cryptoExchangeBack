@@ -1,5 +1,7 @@
 // We reuse this import in order to have access to the `body` property in requests
 const express = require("express");
+const path = require("path");
+const favicon = require("serve-favicon");
 
 // ℹ️ Responsible for the messages you see in the terminal as requests are coming in
 // https://www.npmjs.com/package/morgan
@@ -19,11 +21,21 @@ module.exports = (app) => {
   // Services like heroku use something called a proxy and you need to add this to your server
   app.set("trust proxy", 1);
 
+  app.use(express.static(path.join(__dirname, "..", "public")));
+
+  app.use(
+    favicon(path.join(__dirname, "..", "public", "images", "favicon.ico"))
+  );
+
+  app.use("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+  });
+
   // controls a very specific header to pass headers from the frontend
   app.use(
     cors({
       credentials: true,
-      origin: process.env.ORIGIN || "http://localhost:3000",
+      origin: [process.env.ORIGIN || "http://localhost:3000","http://localhost:5005"]
     })
   );
 
