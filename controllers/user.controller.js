@@ -225,7 +225,7 @@ exports.addBTCwallet = (req, res, next) => {
   if (!regexBTCwallet.test(walletBTCAddress)) {
     return res
       .status(400)
-      .json({ errorMessage: "Dirección de billetera de BTC incorrecta." });
+      .json({ errorMessage: "Dirección de billetera de BTC incorrecta. Recuerda que comienza con los números 1 o 3 y está compuesto por 25 a 34 caracteres, admitiendo letras de la a-z, mayúsculas incluidas, excluyendo 'l', 'I', 'O' y '0'." });
   }
 
   User.findByIdAndUpdate(_id, { walletBTCAddress }, { new: true })
@@ -249,7 +249,7 @@ exports.addETHwallet = (req, res, next) => {
   if (!regexETHwallet.test(walletETHAddress)) {
     return res
       .status(400)
-      .json({ errorMessage: "Dirección de billetera de ETH incorrecta." });
+      .json({ errorMessage: "Dirección de billetera de ETH incorrecta. Recuerda que debe comenzar con '0x', tener 42 caracteres en total y solo contener letras de la 'a'-'f', incluyendo mayúsculas." });
   }
 
   User.findByIdAndUpdate(_id, { walletETHAddress }, { new: true })
