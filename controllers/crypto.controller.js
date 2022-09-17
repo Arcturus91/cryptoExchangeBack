@@ -8,12 +8,20 @@ const binance = require("../config/binance.config");
 
 //will only execute this when creating a new crypto
 exports.createCrypto = (req, res, next) => {
-  const { cryptoName, coinQuantity } = req.body;
+  const { coinQuantity } = req.body;
+  const cryptoName = req.body.cryptoName.toUpperCase()
   const cryptoBuyAmount = coinQuantity;
 
   const { _id } = req.user;
 
-  binance
+ CryptoInventory.findOne({ cryptoName })
+  .then((found) => {
+    if (found)
+      return res
+        .status(400)
+        .json({ errorMessage: "Esta cripto ya fue creada" });
+
+  return binance
     .prices()
     .then((ticker) => {
       const cryptoPair = cryptoName + "USDT";
@@ -55,7 +63,7 @@ exports.createCrypto = (req, res, next) => {
           });
         });
       });
-    })
+    })})
     .catch((error) => {
       if (error instanceof mongoose.Error.ValidationError) {
         return res.status(400).json({ errorMessage: error.message });
@@ -80,7 +88,8 @@ exports.checkInventory = (req, res, next) => {
 
 //admin buying inventory
 exports.buyInventory = (req, res, next) => {
-  const { cryptoName, cryptoBuyAmount } = req.body;
+  const {  cryptoBuyAmount } = req.body;
+  const cryptoName = req.body.cryptoName.toUpperCase()
   const { _id } = req.user;
 const cryptoBuyAmountNumber = Number(cryptoBuyAmount)
   binance
@@ -92,7 +101,7 @@ const cryptoBuyAmountNumber = Number(cryptoBuyAmount)
       CryptoInventory.findOne({ cryptoName }).then((cryptoFound) => {
         if (!cryptoFound) {
           return res.status(400).json({
-            errorMessage: "Aún no se ha registrado esta Cripto",
+            errorMessage: "Aún no se ha registrado esta Cripto. Porfavor, solo compra criptomonedas ya registradas",
           });
         }
 

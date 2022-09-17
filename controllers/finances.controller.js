@@ -4,7 +4,6 @@ const CryptoInventory = require("../models/CryptoInventory.model");
 
 exports.addCash = (req, res, next) => {
   const { cash } = req.body;
-console.log("yo soy cash server", )
 const cashToAdd = Number(cash)
   Finances.findOne()
     .then((found) => {

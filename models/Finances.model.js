@@ -9,7 +9,11 @@ const financesSchema = new Schema(
     profits:{
       type:Number,
       default: 0
-    }
+    },
+/*     profitPercent:{
+      type:Number,
+      default: 1
+    } */
   },
   {
     timestamps: true,
