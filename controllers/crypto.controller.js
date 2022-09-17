@@ -11,7 +11,7 @@ exports.createCrypto = (req, res, next) => {
   const { coinQuantity } = req.body;
   const cryptoName = req.body.cryptoName.toUpperCase()
   const cryptoBuyAmount = coinQuantity;
-console.log("yo soy crypto name", cryptoName);
+
   const { _id } = req.user;
 
  CryptoInventory.findOne({ cryptoName })

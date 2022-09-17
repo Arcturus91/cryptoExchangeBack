@@ -5,8 +5,8 @@ const TransactionSell = require("../models/TransactionSell.model");
 const CryptoInventory = require("../models/CryptoInventory.model");
 const Finances = require("../models/Finances.model");
 const binance = require("../config/binance.config");
-const { clearRes, createJWT } = require("../utils/utils");
-const profitMargin = 0.01;
+const { clearRes } = require("../utils/utils");
+const profitMargin = 0.01; //profit margin set at 1%
 
 exports.getLoggedUser = (req, res, next) => {
   res.status(200).json({ user: req.user });
@@ -269,7 +269,7 @@ exports.addETHwallet = (req, res, next) => {
 
 exports.userOperations = (req, res, next) => {
   const {  _id} = req.user
-  console.log( _id)
+
 
   User.findById
   (_id)
