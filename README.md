@@ -1,14 +1,30 @@
-# Crypto Exchange Backend
+# Crypto Exchange
 
-Backend API for a LATAM crypto exchange 💰
+API for a LATAM crypto exchange 💰
 
 ## Features:
-* ✍️ Register buys and sells of cryptocurrencies with a profit margin that is adjustable.
+* ✍️ Register buys and sells of cryptocurrencies with a profit margin.
 * 📱 Takes current prices from Binance API
 * 👨‍💼 Includes cryptocurrency inventory management by administrator.
-* ⚠️ Show alerts when the exchange has specific low crypto inventory.
 * 📈 Provides current cash balance and profits registered.
 >>
+
+## Admin Routes
+
+### **Credentials**
+
+* **Administrator:**
+Correo electrónico: admin@gmail.com
+Contraseña: Perro12345
+
+* **Recently registered user:**
+Correo electrónico: arc@gmail.com
+Contraseña: Perro12345
+
+* **User with history of operations:**
+Correo electrónico: arc5@gmail.com
+Contraseña: Perro12345
+
 
 
 ## Admin Routes
