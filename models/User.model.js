@@ -35,7 +35,7 @@ const userSchema = new Schema(
     },
     imageUrl:  {
       type: String,
-      default: "https://res.cloudinary.com/dad5dandd/image/upload/v1662986729/wfsac5qqruordebqtzhk.jpg"
+      default: "https://res.cloudinary.com/dad5dandd/image/upload/w_1000,c_fill,ar_1:1,g_auto,r_max,bo_5px_solid_red,b_rgb:262c35/v1664030626/AlpacaExchange/alpacaUserId2_km8k9e.png"
     },
     bankAccount:{
       type:Number,
