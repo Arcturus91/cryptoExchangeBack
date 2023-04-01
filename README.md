@@ -215,8 +215,8 @@ http://localhost:5005/api/auth/signup
 ```
 {
   "email": "admin@gmail.com",
-  "password": "12345",
-  "confirmPassword": "12345",
+  "password": "Perro12345",
+  "confirmPassword": "Perro12345",
   "firstName": "Victor",
   "lastName": "Barrantes"
 }

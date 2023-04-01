@@ -9,15 +9,13 @@ exports.signupProcess = (req, res, next) => {
 
   const regexPassword = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
   if (!regexPassword.test(password)) {
-    return res
-      .status(400)
-      .json({
-        error:
-          "Tu contraseña debe contener al menos 8 caracteres, 1 minúscula, 1 mayúscula y 1 número.",
-      });
+    return res.status(400).json({
+      error:
+        "Tu contraseña debe contener al menos 8 caracteres, 1 minúscula, 1 mayúscula y 1 número.",
+    });
   }
 
-  if (!email.length || !password.length || !confirmPassword.length)
+  if (!email?.length || !password?.length || !confirmPassword?.length)
     return res
       .status(400)
       .json({ errorMessage: "No debes mandar campos vacíos." });
@@ -72,6 +70,7 @@ exports.signupProcess = (req, res, next) => {
           errorMessage: "El correo electronico ya esta en uso.",
         });
       }
+      console.log("yo soy el error en el login", error);
       return res.status(500).json({ errorMessage: error.message });
     });
 };
@@ -86,12 +85,10 @@ exports.loginProcess = (req, res, next) => {
 
   const regexPassword = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
   if (!regexPassword.test(password)) {
-    return res
-      .status(400)
-      .json({
-        error:
-          "Tu contraseña debe contener al menos 8 caracteres, 1 minúscula, 1 mayúscula y 1 número.",
-      });
+    return res.status(400).json({
+      error:
+        "Tu contraseña debe contener al menos 8 caracteres, 1 minúscula, 1 mayúscula y 1 número.",
+    });
   }
 
   User.findOne({ email })
