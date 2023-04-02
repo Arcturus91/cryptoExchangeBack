@@ -1,7 +1,12 @@
 const app = require("./app");
+const server = require("./routes/cryptoSockets.routes");
 
-// ℹ️ Sets the PORT for our app to have access to it. If no env has been set, we hard code it to 3000
 const PORT = process.env.PORT || 5005;
+const PORTWS = process.env.PORTWS || 8080;
+
+server.listen(PORTWS, () => {
+  console.log("Websockets server listening on port 8080");
+});
 
 app.listen(PORT, () => {
   console.log(`Server listening on port http://localhost:${PORT}`);

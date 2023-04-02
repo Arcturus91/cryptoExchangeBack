@@ -27,13 +27,15 @@ module.exports = (app) => {
     favicon(path.join(__dirname, "..", "public", "images", "favicon.ico"))
   );
 
- 
-
   // controls a very specific header to pass headers from the frontend
   app.use(
     cors({
       credentials: true,
-      origin: [process.env.ORIGIN || "http://localhost:3000","http://localhost:5005"]
+      origin: [
+        process.env.ORIGIN || "http://localhost:3000",
+        "http://localhost:5005",
+        "http://localhost:8080",
+      ],
     })
   );
 
