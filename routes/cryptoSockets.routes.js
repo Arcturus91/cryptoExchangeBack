@@ -1,7 +1,14 @@
 const app = require("../app");
 const http = require("http");
 const server = http.createServer(app);
-const io = require("socket.io")(server);
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*", // .env file procces.env.ORIGIN
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true,
+  },
+});
 
 const Binance = require("node-binance-api");
 const binance = new Binance().options({
